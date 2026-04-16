@@ -1,7 +1,7 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { isAdminRequest } from '../../lib/auth';
-import { getDb, listRegistrations, ensureSchema } from '../../lib/db';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { isAdminRequest } from '../lib/auth';
+import { getDb, listRegistrations, ensureSchema } from '../lib/db';
 
 const authed = isAdminRequest(Astro.request, Astro.locals.runtime.env);
 const lang = 'sk';
