@@ -1,0 +1,5 @@
+Contact: mailto:pato.ulicny@gmail.com
+Contact: tel:+421944222485
+Expires: 2027-04-16T00:00:00Z
+Preferred-Languages: sk, cs, en
+Canonical: https://nakupovanie.sk/.well-known/security.txt

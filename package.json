@@ -1,0 +1,24 @@
+{
+  "name": "nakupovanie-domains",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "tfws:generate": "node scripts/generate-tfws.mjs",
+    "tfws:sign": "node scripts/sign-tfws.mjs"
+  },
+  "dependencies": {
+    "astro": "^5.10.0"
+  },
+  "devDependencies": {
+    "@astrojs/cloudflare": "^12.6.12",
+    "@cloudflare/workers-types": "^4.20260405.0",
+    "@types/node": "^22.15.0",
+    "typescript": "^5.6.3",
+    "wrangler": "^3.101.0"
+  }
+}

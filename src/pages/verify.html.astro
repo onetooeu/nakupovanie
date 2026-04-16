@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  lang="sk"
+  title="TFWS verify | nakupovanie.sk / nakupovani.cz"
+  description="Verification page for TFWS 2.0 artifacts"
+  canonical="/verify.html"
+>
+  <main class="page-shell">
+    <div class="container stack">
+      <div class="card">
+        <div class="card-inner">
+          <div class="kicker">TFWS 2.0</div>
+          <h1 class="h2">Verify artifacts</h1>
+          <p class="lead">
+            This page exposes the human-readable trust layer for the domain sale project.
+            It is intentionally static, hashable, and compatible with the TFWS publishing model.
+          </p>
+          <p class="muted">
+            The live site publishes a domain-first trust manifest, a signed inventory path, a
+            human entrypoint, and machine entrypoints under <code>/.well-known/</code>.
+          </p>
+          <div class="grid grid-2" style="margin-top:18px;">
+            <div class="notice">
+              <strong>Human entrypoint</strong><br />
+              <span class="small">/sk • /cz • /en</span>
+            </div>
+            <div class="notice">
+              <strong>Machine entrypoints</strong><br />
+              <span class="small">/.well-known/ai-trust-hub.json • /.well-known/llms.txt • /.well-known/key-history.json</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="card">
+        <div class="card-inner">
+          <h2 style="margin-top:0;">Verification checklist</h2>
+          <ol class="muted" style="padding-left: 20px; margin: 12px 0 0;">
+            <li>Open the human landing page in the required language.</li>
+            <li>Inspect the trust manifest at <code>/.well-known/ai-trust-hub.json</code>.</li>
+            <li>Verify the hash inventory at <code>/dumps/sha256.json</code>.</li>
+            <li>Check the declared public key and key history.</li>
+            <li>Confirm the admin and policy links resolve cleanly.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-inner">
+          <h2 style="margin-top:0;">Publishing model</h2>
+          <p class="muted">
+            nakupovanie.sk / nakupovani.cz is published as a static, audit-friendly showcase with
+            a trust manifest, hash inventory, and signed-artifact-ready structure.
+          </p>
+          <p class="muted">
+            The current bundle includes the TFWS 2.0 scaffold. Final signature material can be added
+            later during deployment with your chosen signing key flow.
+          </p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-inner">
+          <h2 style="margin-top:0;">Linked resources</h2>
+          <div class="footer-links">
+            <a href="/.well-known/ai-trust-hub.json">ai-trust-hub.json</a>
+            <a href="/.well-known/llms.txt">llms.txt</a>
+            <a href="/.well-known/key-history.json">key-history.json</a>
+            <a href="/dumps/sha256.json">sha256.json</a>
+            <a href="/admin">admin</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

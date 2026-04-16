@@ -1,0 +1,403 @@
+---
+import UiMockup from './UiMockup.astro';
+import type { SiteCopy } from '../data/siteCopy';
+import { localizePath } from '../lib/utils';
+
+const { copy } = Astro.props as { copy: SiteCopy };
+
+const otherLangs = {
+  sk: ['cz', 'en'],
+  cz: ['sk', 'en'],
+  en: ['sk', 'cz'],
+} as const;
+---
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href={localizePath(copy.lang, '/')}>
+      <span class="brand-dot"></span>
+      <span>{copy.nav.logo}</span>
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      {copy.nav.menu.map((item) => (
+        <a href={item.href}>{item.label}</a>
+      ))}
+    </nav>
+
+    <div class="lang-switch">
+      <span class="small">{copy.nav.languageLabel}</span>
+      {otherLangs[copy.lang].map((lang) => (
+        <a href={localizePath(lang, '/')} >{lang.toUpperCase()}</a>
+      ))}
+      <a class="active" href={localizePath(copy.lang, '/')}>{copy.lang.toUpperCase()}</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero-wrap section">
+    <div class="container hero-grid">
+      <div>
+        <div class="kicker">{copy.hero.eyebrow}</div>
+        <h1 class="h1">{copy.hero.title}</h1>
+        <p class="lead">{copy.hero.subtitle}</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="#registracia">{copy.hero.ctaPrimary}</a>
+          <a class="btn btn-secondary" href="#ponuka">{copy.hero.ctaSecondary}</a>
+        </div>
+        <div style="height: 26px"></div>
+        <div class="meta-grid">
+          {copy.hero.trust.map((item) => (
+            <div class="meta-item soft-panel">
+              <strong>{item}</strong>
+              <div class="small">TFWS 2.0 · premium corporate presentation</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="soft-panel hero-visual">
+        <div class="hero-visual-content">
+          <div class="pill">TFWS 2.0 / private sale interface</div>
+          <div class="domain-stack">
+            <div class="domain-card">
+              <div class="domain-name">nakupovanie.sk</div>
+              <div class="domain-desc">{copy.offer.domainA.desc}</div>
+            </div>
+            <div class="domain-card">
+              <div class="domain-name">nakupovani.cz</div>
+              <div class="domain-desc">{copy.offer.domainB.desc}</div>
+            </div>
+          </div>
+          <div class="notice">
+            {copy.offer.footer}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="ponuka">
+    <div class="container">
+      <div class="section-title">
+        <div class="kicker">{copy.offer.title}</div>
+        <h2 class="h2">{copy.offer.title}</h2>
+        <p class="lead">{copy.offer.intro}</p>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-inner">
+            <div class="badge">.sk</div>
+            <h3 style="font-size:1.8rem; margin:16px 0 10px;">{copy.offer.domainA.name}</h3>
+            <p class="muted">{copy.offer.domainA.desc}</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-inner">
+            <div class="badge">.cz</div>
+            <h3 style="font-size:1.8rem; margin:16px 0 10px;">{copy.offer.domainB.name}</h3>
+            <p class="muted">{copy.offer.domainB.desc}</p>
+          </div>
+        </div>
+      </div>
+      <div style="height: 18px"></div>
+      <div class="notice">{copy.offer.footer}</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid grid-2">
+      <div>
+        <div class="kicker">{copy.strategic.title}</div>
+        <h2 class="h2">{copy.strategic.title}</h2>
+        <p class="text-block">{copy.strategic.intro}</p>
+      </div>
+      <div class="grid">
+        {copy.strategic.points.map((point) => (
+          <div class="card point-card">
+            <div class="card-inner">
+              <h3>{point.title}</h3>
+              <p>{point.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="showcase">
+    <div class="container">
+      <div class="section-title">
+        <div class="kicker">{copy.showcase.title}</div>
+        <h2 class="h2">{copy.showcase.title}</h2>
+        <p class="lead">{copy.showcase.intro}</p>
+      </div>
+
+      <div class="grid grid-2">
+        {copy.showcase.items.map((item) => (
+          <div class="card showcase-card">
+            <div class="showcase-head">
+              <h3 class="showcase-title">{item.title}</h3>
+              <span class="badge">{item.tag}</span>
+            </div>
+            <p class="showcase-text">{item.text}</p>
+            <UiMockup variant={item.variant} />
+          </div>
+        ))}
+      </div>
+
+      <div style="height: 18px"></div>
+      <div class="notice">{copy.showcase.outro}</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-title">
+        <div class="kicker">{copy.audience.title}</div>
+        <h2 class="h2">{copy.audience.title}</h2>
+        <p class="lead">{copy.audience.intro}</p>
+      </div>
+
+      <div class="grid grid-3">
+        {copy.audience.items.map((item) => (
+          <div class="card audience-card">
+            <div class="card-inner">
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style="height: 18px"></div>
+      <div class="notice">{copy.audience.outro}</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid grid-2">
+      <div>
+        <div class="kicker">{copy.urgency.title}</div>
+        <h2 class="h2">{copy.urgency.title}</h2>
+        <p class="text-block">{copy.urgency.intro}</p>
+      </div>
+      <div class="grid">
+        {copy.urgency.points.map((point) => (
+          <div class="card urgency-card">
+            <div class="card-inner">
+              <h3>{point.title}</h3>
+              <p>{point.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="container" style="margin-top:18px;">
+      <div class="notice">{copy.urgency.outro}</div>
+    </div>
+  </section>
+
+  <section class="section" id="proces">
+    <div class="container">
+      <div class="section-title">
+        <div class="kicker">{copy.process.title}</div>
+        <h2 class="h2">{copy.process.title}</h2>
+        <p class="lead">{copy.process.intro}</p>
+      </div>
+
+      <div class="soft-panel card" style="padding: 22px;">
+        <div class="timeline">
+          {copy.process.steps.map((step, index) => (
+            <div class="timeline-item">
+              <div class="timeline-num">{String(index + 1).padStart(2, '0')}</div>
+              <div>
+                <h3 style="margin:0 0 6px;">{step.title}</h3>
+                <p>{step.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style="height: 18px"></div>
+      <div class="notice">{copy.process.outro}</div>
+    </div>
+  </section>
+
+
+  <section class="section" id="tfws">
+    <div class="container">
+      <div class="section-title">
+        <div class="kicker">{copy.trust.title}</div>
+        <h2 class="h2">{copy.trust.title}</h2>
+        <p class="lead">{copy.trust.intro}</p>
+      </div>
+
+      <div class="grid grid-2">
+        {copy.trust.cards.map((item) => (
+          <div class="card">
+            <div class="card-inner">
+              <h3>{item.title}</h3>
+              <p class="muted">{item.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style="height: 18px"></div>
+      <div class="endpoint-row">
+        {copy.trust.endpoints.map((endpoint) => (
+          <a class="endpoint-chip" href={endpoint.href}>{endpoint.label}</a>
+        ))}
+      </div>
+      <div class="notice">{copy.trust.outro}</div>
+    </div>
+  </section>
+
+  <section class="section" id="registracia">
+    <div class="container grid grid-2">
+      <div>
+        <div class="kicker">{copy.form.title}</div>
+        <h2 class="h2">{copy.form.title}</h2>
+        <p class="lead">{copy.form.intro}</p>
+        <div style="height: 18px"></div>
+        <div class="notice">
+          {copy.buyNow.intro}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-inner">
+          <form class="form" action="/api/register" method="post">
+            <input type="hidden" name="lang" value={copy.lang} />
+            <div class="field-grid">
+              <div class="field">
+                <label for="company_name">{copy.form.fields.companyName}</label>
+                <input id="company_name" name="company_name" required />
+              </div>
+              <div class="field">
+                <label for="company_id">{copy.form.fields.companyId}</label>
+                <input id="company_id" name="company_id" required />
+              </div>
+              <div class="field">
+                <label for="contact_name">{copy.form.fields.contactName}</label>
+                <input id="contact_name" name="contact_name" required />
+              </div>
+              <div class="field">
+                <label for="contact_position">{copy.form.fields.position}</label>
+                <input id="contact_position" name="contact_position" required />
+              </div>
+              <div class="field">
+                <label for="email">{copy.form.fields.email}</label>
+                <input id="email" type="email" name="email" required />
+              </div>
+              <div class="field">
+                <label for="phone">{copy.form.fields.phone}</label>
+                <input id="phone" name="phone" required />
+              </div>
+              <div class="field">
+                <label for="country">{copy.form.fields.country}</label>
+                <input id="country" name="country" required />
+              </div>
+              <div class="field">
+                <label for="company_website">{copy.form.fields.website}</label>
+                <input id="company_website" name="company_website" placeholder="https://" required />
+              </div>
+              <div class="field" style="grid-column: 1 / -1;">
+                <label for="industry">{copy.form.fields.industry}</label>
+                <input id="industry" name="industry" required />
+              </div>
+              <div class="field" style="grid-column: 1 / -1;">
+                <label for="delivery_address">{copy.form.fields.address}</label>
+                <textarea id="delivery_address" name="delivery_address" required></textarea>
+              </div>
+              <div class="field" style="grid-column: 1 / -1;">
+                <label for="usage_note">{copy.form.fields.note}</label>
+                <textarea id="usage_note" name="usage_note" required></textarea>
+              </div>
+            </div>
+
+            <div class="checks">
+              <label class="checkbox">
+                <input type="checkbox" name="consent_data" value="1" required />
+                <span>{copy.form.fields.consentData}</span>
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" name="consent_contact" value="1" required />
+                <span>{copy.form.fields.consentContact}</span>
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" name="consent_terms" value="1" required />
+                <span>{copy.form.fields.consentTerms}</span>
+              </label>
+            </div>
+
+            <button class="btn btn-primary" type="submit">{copy.form.submit}</button>
+            <p class="small">TFWS 2.0 · D1 · email confirmation · postal notice enabled</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid grid-2">
+      <div class="card">
+        <div class="card-inner">
+          <div class="kicker">{copy.buyNow.title}</div>
+          <h2 class="h2">{copy.buyNow.title}</h2>
+          <p class="lead">{copy.buyNow.intro}</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-inner">
+          <div class="badge">Kontakt</div>
+          <p class="muted" style="margin:16px 0 14px;">{copy.buyNow.note}</p>
+          <p class="muted" style="margin:0; font-weight:700;">{copy.buyNow.phoneLabel}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-title">
+        <div class="kicker">{copy.faq.title}</div>
+        <h2 class="h2">{copy.faq.title}</h2>
+      </div>
+
+      <div class="faq">
+        {copy.faq.items.map((item) => (
+          <details class="faq-item">
+            <summary>
+              <span>{item.q}</span>
+              <span>+</span>
+            </summary>
+            <div class="faq-answer">{item.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <strong>{copy.nav.logo}</strong>
+        <div class="small" style="margin-top: 10px;">{copy.footer.contact}</div>
+      </div>
+      <div class="footer-links">
+        {copy.footer.links.map((link) => (
+          <a href={link.href}>{link.label}</a>
+        ))}
+      </div>
+    </div>
+    <div style="height: 16px"></div>
+    <div class="small">{copy.footer.disclaimer}</div>
+  </div>
+</footer>

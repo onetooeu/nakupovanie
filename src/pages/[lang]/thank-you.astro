@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { siteCopy } from '../../data/siteCopy';
+import { normalizeLang } from '../../lib/utils';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'sk' } }, { params: { lang: 'cz' } }, { params: { lang: 'en' } }];
+}
+
+const lang = normalizeLang(Astro.params.lang);
+const copy = siteCopy[lang];
+---
+
+<BaseLayout lang={lang} title={`${copy.thankYou.title} | ${copy.nav.logo}`} description={copy.thankYou.intro} canonical={`/${lang}/thank-you`}>
+  <main class="page-shell">
+    <div class="container">
+      <div class="card">
+        <div class="card-inner">
+          <div class="kicker">{copy.thankYou.title}</div>
+          <h1 class="h1" style="font-size: clamp(2rem, 4.3vw, 3.6rem); max-width: 16ch;">{copy.thankYou.title}</h1>
+          <p class="lead" style="max-width: 62ch;">{copy.thankYou.intro}</p>
+
+          <div class="soft-panel" style="margin-top: 24px; padding: 20px 22px;">
+            <div class="badge">Kontakt</div>
+            <p class="lead" style="margin: 12px 0 0;">{copy.thankYou.contactText}</p>
+          </div>
+
+          <div class="btn-row">
+            <a class="btn btn-primary" href={`/${lang}`}>{copy.thankYou.cta}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

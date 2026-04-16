@@ -1,0 +1,33 @@
+---
+import '../styles/global.css';
+const {
+  title,
+  description,
+  lang = 'sk',
+  canonical,
+} = Astro.props as {
+  title: string;
+  description: string;
+  lang?: string;
+  canonical?: string;
+};
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {canonical ? <link rel="canonical" href={canonical} /> : null}
+    <meta name="theme-color" content="#0b0b0d" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

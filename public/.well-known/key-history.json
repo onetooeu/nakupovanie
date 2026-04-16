@@ -1,0 +1,15 @@
+{
+  "$schema": "/schemas/key-history.schema.json",
+  "type": "key-history",
+  "version": "2026.04-final",
+  "current_epoch_utc": "2026-04-16T00:00:00Z",
+  "keys": [
+    {
+      "id": "tfws-placeholder-2026-04",
+      "scheme": "ed25519",
+      "state": "placeholder",
+      "created_at": "2026-04-16T00:00:00Z",
+      "notes": "Replace with your production signing key during deployment."
+    }
+  ]
+}

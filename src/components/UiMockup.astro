@@ -1,0 +1,192 @@
+---
+import type { ShowcaseVariant } from '../data/siteCopy';
+
+const { variant = 'marketplace' } = Astro.props as {
+  variant: ShowcaseVariant;
+};
+
+const titleMap: Record<ShowcaseVariant, string> = {
+  marketplace: 'Marketplace',
+  comparison: 'Comparison',
+  affiliate: 'Affiliate',
+  content: 'Media',
+  umbrella: 'Umbrella',
+  b2b: 'Commerce',
+};
+
+const label = titleMap[variant];
+---
+
+<div class={`mockup ${variant}`}>
+  <div class="mockup-top">
+    <div class="mockup-dots"><span></span><span></span><span></span></div>
+    <div class="mock-pill">{label}</div>
+  </div>
+
+  {variant === 'marketplace' && (
+    <div class="mockup-body">
+      <div class="line w60"></div>
+      <div class="line w40"></div>
+      <div class="m-grid" style="grid-template-columns:1fr 1fr;">
+        <div class="mock-card">
+          <div class="mock-pill">Top seller</div>
+          <div style="height:10px"></div>
+          <div class="line w80"></div>
+          <div class="line w40"></div>
+        </div>
+        <div class="mock-card">
+          <div class="mock-pill">Trending</div>
+          <div style="height:10px"></div>
+          <div class="line w60"></div>
+          <div class="line w30"></div>
+        </div>
+      </div>
+      <div class="chart">
+        <div style="height:34%"></div>
+        <div style="height:62%"></div>
+        <div style="height:48%"></div>
+        <div style="height:78%"></div>
+        <div style="height:56%"></div>
+      </div>
+      <div class="table">
+        <div class="table-row"><span>Electronics</span><span>12 480 offers</span><span>Live</span></div>
+        <div class="table-row"><span>Home & Living</span><span>8 021 offers</span><span>Live</span></div>
+        <div class="table-row"><span>Fashion</span><span>15 942 offers</span><span>Live</span></div>
+      </div>
+    </div>
+  )}
+
+  {variant === 'comparison' && (
+    <div class="mockup-body">
+      <div class="line w80"></div>
+      <div class="line w40"></div>
+      <div class="m-grid" style="grid-template-columns:1.1fr 0.9fr;">
+        <div class="mock-card">
+          <div class="mock-pill">Category</div>
+          <div style="height:10px"></div>
+          <div class="line w80"></div>
+          <div class="line w60"></div>
+          <div class="line w40"></div>
+        </div>
+        <div class="mock-card">
+          <div class="mock-pill">Score</div>
+          <div style="height:10px"></div>
+          <div class="chart" style="min-height:70px;">
+            <div style="height:42%"></div>
+            <div style="height:70%"></div>
+            <div style="height:58%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="table">
+        <div class="table-row"><span>Model A</span><span>Price -12%</span><span>Best value</span></div>
+        <div class="table-row"><span>Model B</span><span>Price -8%</span><span>Fast delivery</span></div>
+        <div class="table-row"><span>Model C</span><span>Price -15%</span><span>Top deal</span></div>
+      </div>
+    </div>
+  )}
+
+  {variant === 'affiliate' && (
+    <div class="mockup-body">
+      <div class="line w50"></div>
+      <div class="line w30"></div>
+      <div class="m-grid" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="mock-card"><div class="mock-pill">#1</div><div style="height:8px"></div><div class="line w80"></div><div class="line w50"></div></div>
+        <div class="mock-card"><div class="mock-pill">#2</div><div style="height:8px"></div><div class="line w70"></div><div class="line w40"></div></div>
+        <div class="mock-card"><div class="mock-pill">#3</div><div style="height:8px"></div><div class="line w60"></div><div class="line w30"></div></div>
+      </div>
+      <div class="chart">
+        <div style="height:22%"></div>
+        <div style="height:48%"></div>
+        <div style="height:60%"></div>
+        <div style="height:74%"></div>
+        <div style="height:90%"></div>
+      </div>
+      <div class="table">
+        <div class="table-row"><span>Clicks</span><span>18 240</span><span>+24%</span></div>
+        <div class="table-row"><span>Conversions</span><span>1 245</span><span>+18%</span></div>
+        <div class="table-row"><span>Revenue</span><span>€34 200</span><span>+31%</span></div>
+      </div>
+    </div>
+  )}
+
+  {variant === 'content' && (
+    <div class="mockup-body">
+      <div class="line w70"></div>
+      <div class="line w40"></div>
+      <div class="mock-card">
+        <div class="mock-pill">Feature story</div>
+        <div style="height:10px"></div>
+        <div class="line w80"></div>
+        <div class="line w60"></div>
+        <div class="line w40"></div>
+      </div>
+      <div class="m-grid" style="grid-template-columns:1fr 1fr;">
+        <div class="mock-card">
+          <div class="mock-pill">Trending</div>
+          <div style="height:8px"></div>
+          <div class="line w60"></div>
+        </div>
+        <div class="mock-card">
+          <div class="mock-pill">Editor’s pick</div>
+          <div style="height:8px"></div>
+          <div class="line w70"></div>
+        </div>
+      </div>
+      <div class="table">
+        <div class="table-row"><span>Best kitchen tools</span><span>Read 3 min</span><span>Hot</span></div>
+        <div class="table-row"><span>Top summer deals</span><span>Read 2 min</span><span>New</span></div>
+        <div class="table-row"><span>Premium buys</span><span>Read 4 min</span><span>Featured</span></div>
+      </div>
+    </div>
+  )}
+
+  {variant === 'umbrella' && (
+    <div class="mockup-body">
+      <div class="line w60"></div>
+      <div class="line w30"></div>
+      <div class="m-grid" style="grid-template-columns:1fr 1fr;">
+        <div class="mock-card"><div class="mock-pill">Brand A</div><div style="height:8px"></div><div class="line w80"></div></div>
+        <div class="mock-card"><div class="mock-pill">Brand B</div><div style="height:8px"></div><div class="line w70"></div></div>
+      </div>
+      <div class="mock-card">
+        <div class="mock-pill">Portfolio</div>
+        <div style="height:8px"></div>
+        <div class="chart" style="min-height:88px;">
+          <div style="height:45%"></div>
+          <div style="height:58%"></div>
+          <div style="height:38%"></div>
+          <div style="height:72%"></div>
+        </div>
+      </div>
+      <div class="table">
+        <div class="table-row"><span>Shop 1</span><span>Active</span><span>SK</span></div>
+        <div class="table-row"><span>Shop 2</span><span>Active</span><span>CZ</span></div>
+        <div class="table-row"><span>Shop 3</span><span>Pipeline</span><span>EN</span></div>
+      </div>
+    </div>
+  )}
+
+  {variant === 'b2b' && (
+    <div class="mockup-body">
+      <div class="line w60"></div>
+      <div class="line w30"></div>
+      <div class="m-grid" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="mock-card"><div class="mock-pill">Leads</div><div style="height:8px"></div><div class="line w80"></div></div>
+        <div class="mock-card"><div class="mock-pill">Pipeline</div><div style="height:8px"></div><div class="line w60"></div></div>
+        <div class="mock-card"><div class="mock-pill">Orders</div><div style="height:8px"></div><div class="line w50"></div></div>
+      </div>
+      <div class="chart">
+        <div style="height:28%"></div>
+        <div style="height:40%"></div>
+        <div style="height:66%"></div>
+        <div style="height:86%"></div>
+      </div>
+      <div class="table">
+        <div class="table-row"><span>New leads</span><span>48</span><span>Today</span></div>
+        <div class="table-row"><span>Qualified</span><span>23</span><span>Warm</span></div>
+        <div class="table-row"><span>Closed</span><span>11</span><span>Won</span></div>
+      </div>
+    </div>
+  )}
+</div>

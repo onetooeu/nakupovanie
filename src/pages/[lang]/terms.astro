@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { siteCopy } from '../../data/siteCopy';
+import { normalizeLang } from '../../lib/utils';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'sk' } }, { params: { lang: 'cz' } }, { params: { lang: 'en' } }];
+}
+
+const lang = normalizeLang(Astro.params.lang);
+const copy = siteCopy[lang];
+---
+
+<BaseLayout lang={lang} title={`${copy.terms.title} | ${copy.nav.logo}`} description={copy.terms.intro} canonical={`/${lang}/terms`}>
+  <main class="page-shell">
+    <div class="container stack">
+      <div class="kicker">{copy.terms.title}</div>
+      <h1 class="h1" style="font-size: clamp(2.4rem, 6vw, 4.5rem);">{copy.terms.title}</h1>
+      <p class="lead">{copy.terms.intro}</p>
+
+      {copy.terms.sections.map((section) => (
+        <section class="card">
+          <div class="card-inner">
+            <h2 style="margin-top:0;">{section.title}</h2>
+            {section.body.map((p) => <p class="muted">{p}</p>)}
+          </div>
+        </section>
+      ))}
+    </div>
+  </main>
+</BaseLayout>

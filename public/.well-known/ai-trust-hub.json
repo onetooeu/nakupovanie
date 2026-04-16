@@ -1,0 +1,67 @@
+{
+  "$schema": "/schemas/ai-trust-hub.schema.json",
+  "type": "trust-manifest",
+  "name": "Nakupovanie Trust Hub",
+  "version": "2026.04-final",
+  "domain": "nakupovanie.sk",
+  "domains": [
+    "nakupovanie.sk",
+    "nakupovani.cz"
+  ],
+  "last_updated": "2026-04-16T00:00:00Z",
+  "manifest": {
+    "name": "nakupovanie.sk / nakupovani.cz",
+    "stability": "final",
+    "updated": "2026-04-16T00:00:00Z",
+    "notes": "Static, audit-friendly acquisition hub for premium domain sale and closed bidding.",
+    "version": "2026.04-final"
+  },
+  "owner": {
+    "display_name": "OneToo s. r. o.",
+    "jurisdiction": "EU",
+    "contacts": [
+      { "type": "email", "value": "pato.ulicny@gmail.com" },
+      { "type": "phone", "value": "+421 944 222 485" }
+    ]
+  },
+  "endpoints": {
+    "human_landing": "/sk",
+    "verify": "/verify.html",
+    "hub": "/ai-trust-hub.html",
+    "llms": "/.well-known/llms.txt",
+    "minisign_public_key": "/.well-known/minisign.pub",
+    "key_history": "/.well-known/key-history.json",
+    "verification_sha256": "/dumps/sha256.json",
+    "signature_ai_trust_hub": "/.well-known/ai-trust-hub.json.minisig",
+    "signature_key_history": "/.well-known/key-history.json.minisig",
+    "signature_sha256": "/dumps/sigs/sha256.json.minisig",
+    "security_txt": "/.well-known/security.txt",
+    "policy": "/.well-known/policy.sh",
+    "privacy": "/sk/privacy",
+    "terms": "/sk/terms",
+    "admin": "/admin",
+    "portal": "https://portal.onetoo.eu/",
+    "search": "https://search.onetoo.eu/"
+  },
+  "resources": {
+    "verify": "https://nakupovanie.sk/verify.html",
+    "llms_txt": "https://nakupovanie.sk/.well-known/llms.txt",
+    "search": "https://search.onetoo.eu/",
+    "portal": "https://portal.onetoo.eu/"
+  },
+  "policies": {
+    "privacy": "/sk/privacy",
+    "terms": "/sk/terms"
+  },
+  "signatures": {
+    "scheme": "minisign",
+    "public_key": "/.well-known/minisign.pub",
+    "artifacts": {
+      "sha256_inventory": "/dumps/sigs/sha256.json.minisig"
+    }
+  },
+  "notes": [
+    "This manifest is a TFWS 2.0-aligned public trust surface.",
+    "Replace the placeholder signing artifacts with your production signing flow before release."
+  ]
+}

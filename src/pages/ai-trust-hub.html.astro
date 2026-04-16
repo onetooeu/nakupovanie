@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  lang="sk"
+  title="AI Trust Hub | nakupovanie.sk / nakupovani.cz"
+  description="TFWS 2.0 trust hub for the nakupovanie project"
+  canonical="/ai-trust-hub.html"
+>
+  <main class="page-shell">
+    <div class="container stack">
+      <section class="card">
+        <div class="card-inner">
+          <div class="kicker">AI Trust Hub</div>
+          <h1 class="h2">nakupovanie.sk / nakupovani.cz</h1>
+          <p class="lead">
+            Static, verifiable, domain-first trust surface for a premium domain sale and acquisition flow.
+          </p>
+          <p class="muted">
+            The site is published as a structured trust layer with human pages, machine endpoints,
+            hashed artifacts, and a simple verification path designed to be readable by both people
+            and agents.
+          </p>
+        </div>
+      </section>
+
+      <section class="grid grid-2">
+        <div class="card">
+          <div class="card-inner">
+            <h2 style="margin-top:0;">Human links</h2>
+            <p class="muted">Choose the language version or verify the process.</p>
+            <div class="footer-links">
+              <a href="/sk">SK</a>
+              <a href="/cz">CZ</a>
+              <a href="/en">EN</a>
+              <a href="/verify.html">Verify</a>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-inner">
+            <h2 style="margin-top:0;">Machine links</h2>
+            <div class="footer-links">
+              <a href="/.well-known/ai-trust-hub.json">ai-trust-hub.json</a>
+              <a href="/.well-known/llms.txt">llms.txt</a>
+              <a href="/.well-known/minisign.pub">minisign.pub</a>
+              <a href="/.well-known/key-history.json">key-history.json</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

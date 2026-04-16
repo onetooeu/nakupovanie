@@ -1,0 +1,35 @@
+# nakupovanie.sk / nakupovani.cz
+
+Premium domain acquisition hub for:
+- companies
+- e-commerce groups
+- marketplace operators
+- media-commerce hybrids
+- strategic buyers
+
+## Human pages
+- /sk
+- /cz
+- /en
+- /verify.html
+- /ai-trust-hub.html
+
+## Machine endpoints
+- /.well-known/ai-trust-hub.json
+- /.well-known/llms.txt
+- /.well-known/minisign.pub
+- /.well-known/key-history.json
+- /dumps/sha256.json
+- /dumps/sigs/sha256.json.minisig
+
+## Summary
+This site presents a closed corporate acquisition flow for the pair:
+- nakupovanie.sk
+- nakupovani.cz
+
+The project includes:
+- company registration form
+- immediate purchase after registration
+- closed bidding process
+- TFWS 2.0 trust scaffold
+- simple admin panel
