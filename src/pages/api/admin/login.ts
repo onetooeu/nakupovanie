@@ -15,7 +15,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
   const headers = new Headers({
     'Set-Cookie': `nakupovanie_admin=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${60 * 60 * 8}`,
-    Location: '/admin',
+    Location: '/control/panel',
   });
 
   return new Response(null, { status: 303, headers });
