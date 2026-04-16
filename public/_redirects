@@ -1,2 +1,4 @@
-/admin /panel 302
-/admin/ /panel 302
+/admin /control/panel 302
+/admin/ /control/panel 302
+/panel /control/panel 302
+/panel/ /control/panel 302
