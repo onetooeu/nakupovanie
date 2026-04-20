@@ -1,24 +1,41 @@
 import type { APIRoute } from 'astro';
-import { getDb, updateRegistration, ensureSchema } from '../../../../../lib/db';
-import { isAdminRequest } from '../../../../../lib/auth';
+import { isAdminRequest } from '../../../../lib/auth';
+import { getDb, ensureSchema, updateRegistration } from '../../../../lib/db';
 
-export const POST: APIRoute = async ({ params, request, locals }) => {
+export const POST: APIRoute = async ({ request, params, locals }) => {
   if (!isAdminRequest(request, locals.runtime.env)) {
     return new Response('Unauthorized', { status: 401 });
   }
+
   const id = Number(params.id);
+  if (!Number.isFinite(id)) {
+    return new Response('Invalid ID', { status: 400 });
+  }
+
   const form = await request.formData();
-  const field = String(form.get('field') || 'status');
-  const value = String(form.get('value') || '');
+  const field = String(form.get('field') || '').trim();
+  const value = String(form.get('value') || '').trim();
 
   const db = getDb(locals.runtime.env);
   await ensureSchema(db);
 
-  const updates: any = {};
-  if (field === 'status') updates.status = value;
-  if (field === 'admin_note') updates.admin_note = value;
-  if (field === 'last_contact_at') updates.last_contact_at = value;
+  if (field === 'status') {
+    const updated = await updateRegistration(db, id, { status: value });
+    if (!updated) return new Response('Not found', { status: 404 });
+  } else if (field === 'admin_note') {
+    const updated = await updateRegistration(db, id, { admin_note: value });
+    if (!updated) return new Response('Not found', { status: 404 });
+  } else if (field === 'last_contact_at') {
+    const updated = await updateRegistration(db, id, { last_contact_at: value });
+    if (!updated) return new Response('Not found', { status: 404 });
+  } else {
+    return new Response('Unsupported field', { status: 400 });
+  }
 
-  await updateRegistration(db, id, updates);
-  return Response.redirect(new URL('/control/panel/', request.url), 303);
+  return new Response(null, {
+    status: 303,
+    headers: {
+      Location: '/control/panel/',
+    },
+  });
 };
