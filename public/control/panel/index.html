@@ -1,0 +1,213 @@
+﻿<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Control Panel | nakupovanie.sk</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b0b0f;
+      color: #f5f1ea;
+      font-family: Arial, sans-serif;
+    }
+    .wrap {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+    .card {
+      width: min(980px, 100%);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 20px;
+      background: rgba(255,255,255,.04);
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      padding: 28px;
+      box-sizing: border-box;
+    }
+    .kicker {
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-size: 12px;
+      opacity: .7;
+      margin-bottom: 10px;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: 42px;
+      line-height: 1.05;
+    }
+    p {
+      margin: 0 0 16px;
+      opacity: .9;
+      line-height: 1.55;
+    }
+    label {
+      display: block;
+      margin: 0 0 8px;
+      font-weight: 700;
+    }
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: #111318;
+      color: #fff;
+      font-size: 16px;
+    }
+    button, a.btn {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 14px 18px;
+      border: 0;
+      border-radius: 999px;
+      background: #e7c27a;
+      color: #111;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-secondary {
+      background: transparent;
+      color: #f5f1ea;
+      border: 1px solid rgba(255,255,255,.16);
+    }
+    .row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .panel {
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      padding: 16px;
+    }
+    .small {
+      font-size: 14px;
+      opacity: .75;
+    }
+    .hidden { display: none !important; }
+    .error {
+      margin-top: 12px;
+      color: #ffb4b4;
+      font-size: 14px;
+    }
+    @media (max-width: 900px) {
+      .grid, .grid-3 { grid-template-columns: 1fr; }
+      h1 { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section id="loginCard" class="card hidden">
+      <div class="kicker">Admin login</div>
+      <h1>Sign in</h1>
+      <p>Admin login for nakupovanie.sk / nakupovani.cz</p>
+
+      <form action="/api/admin/login" method="post">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" />
+        <button type="submit">Login</button>
+      </form>
+
+      <p class="small" style="margin-top:14px;">
+        Set ADMIN_PASSWORD and ADMIN_COOKIE_SECRET in .dev.vars or Cloudflare secrets.
+      </p>
+    </section>
+
+    <section id="panelCard" class="card hidden">
+      <div class="kicker">Admin panel</div>
+      <h1>CONTROL PANEL LIVE</h1>
+      <p>Ak toto vidíš po prihlásení, route aj auth fungujú. Tento panel beží ako čistý statický HTML súbor v <code>public/</code>.</p>
+
+      <div class="row">
+        <a class="btn" href="/api/admin/export.csv">Export CSV</a>
+        <a class="btn btn-secondary" href="/api/admin/export.json">Export JSON</a>
+        <a class="btn btn-secondary" href="/api/admin/logout">Logout</a>
+      </div>
+
+      <div class="grid-3" id="stats"></div>
+
+      <div class="panel" style="margin-top:18px;">
+        <div class="small">Status</div>
+        <strong id="authState">Checking auth…</strong>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const loginCard = document.getElementById('loginCard');
+    const panelCard = document.getElementById('panelCard');
+    const stats = document.getElementById('stats');
+    const authState = document.getElementById('authState');
+
+    function showLogin(message) {
+      loginCard.classList.remove('hidden');
+      panelCard.classList.add('hidden');
+      authState.textContent = message || 'Not signed in';
+    }
+
+    function showPanel(count) {
+      loginCard.classList.add('hidden');
+      panelCard.classList.remove('hidden');
+      authState.textContent = 'Authenticated';
+
+      stats.innerHTML = `
+        <div class="panel"><div class="small">Panel path</div><strong>/control/panel/</strong></div>
+        <div class="panel"><div class="small">Registrations</div><strong>${count}</strong></div>
+        <div class="panel"><div class="small">Mode</div><strong>Static public route</strong></div>
+      `;
+    }
+
+    async function loadPanel() {
+      try {
+        const res = await fetch('/api/admin/registrations', {
+          credentials: 'include',
+          cache: 'no-store',
+        });
+
+        if (res.status === 401) {
+          showLogin('Please sign in');
+          return;
+        }
+
+        if (!res.ok) {
+          showLogin(`Failed to load panel (${res.status})`);
+          return;
+        }
+
+        const data = await res.json();
+        const rows = Array.isArray(data.registrations) ? data.registrations : [];
+        showPanel(rows.length);
+      } catch (error) {
+        console.error(error);
+        showLogin('Panel load failed');
+      }
+    }
+
+    loadPanel();
+  </script>
+</body>
+</html>
