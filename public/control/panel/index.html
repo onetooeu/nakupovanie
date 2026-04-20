@@ -112,6 +112,7 @@
       margin-top: 12px;
       color: #ffb4b4;
       font-size: 14px;
+      min-height: 1.2em;
     }
     @media (max-width: 900px) {
       .grid, .grid-3 { grid-template-columns: 1fr; }
@@ -126,10 +127,11 @@
       <h1>Sign in</h1>
       <p>Admin login for nakupovanie.sk / nakupovani.cz</p>
 
-      <form action="/api/admin/login" method="post">
+      <form id="loginForm" action="/api/admin/login" method="post">
         <label for="password">Password</label>
         <input id="password" name="password" type="password" autocomplete="current-password" />
         <button type="submit">Login</button>
+        <div id="loginError" class="error"></div>
       </form>
 
       <p class="small" style="margin-top:14px;">
@@ -158,10 +160,33 @@
   </main>
 
   <script>
+    const loginForm = document.getElementById('loginForm');
+    const loginError = document.getElementById('loginError');
     const loginCard = document.getElementById('loginCard');
     const panelCard = document.getElementById('panelCard');
     const stats = document.getElementById('stats');
     const authState = document.getElementById('authState');
+
+    const statusOrder = [
+      'new',
+      'confirmed',
+      'shortlisted',
+      'posted',
+      'buy_now_interest',
+      'auction_interest',
+      'inactive',
+      'won',
+      'lost',
+    ];
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
 
     function showLogin(message) {
       loginCard.classList.remove('hidden');
@@ -169,15 +194,20 @@
       authState.textContent = message || 'Not signed in';
     }
 
-    function showPanel(count) {
+    function showPanel(rows) {
       loginCard.classList.add('hidden');
       panelCard.classList.remove('hidden');
       authState.textContent = 'Authenticated';
 
+      const counts = Object.fromEntries(statusOrder.map((status) => [status, 0]));
+      for (const row of rows) {
+        if (row && row.status in counts) counts[row.status]++;
+      }
+
       stats.innerHTML = `
         <div class="panel"><div class="small">Panel path</div><strong>/control/panel/</strong></div>
-        <div class="panel"><div class="small">Registrations</div><strong>${count}</strong></div>
-        <div class="panel"><div class="small">Mode</div><strong>Static public route</strong></div>
+        <div class="panel"><div class="small">Registrations</div><strong>${rows.length}</strong></div>
+        <div class="panel"><div class="small">New</div><strong>${counts.new}</strong></div>
       `;
     }
 
@@ -200,12 +230,39 @@
 
         const data = await res.json();
         const rows = Array.isArray(data.registrations) ? data.registrations : [];
-        showPanel(rows.length);
+        showPanel(rows);
       } catch (error) {
         console.error(error);
         showLogin('Panel load failed');
       }
     }
+
+    loginForm?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      loginError.textContent = '';
+
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          body: new FormData(loginForm),
+          credentials: 'include',
+          cache: 'no-store',
+        });
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => null);
+          loginError.textContent = data?.error || 'Invalid password';
+          showLogin(loginError.textContent);
+          return;
+        }
+
+        await loadPanel();
+      } catch (error) {
+        console.error(error);
+        loginError.textContent = 'Login failed';
+        showLogin('Login failed');
+      }
+    });
 
     loadPanel();
   </script>
