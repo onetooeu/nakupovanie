@@ -1,19 +1,16 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { isAdminRequest } from '../../lib/auth';
-import { getDb, listRegistrations, listEmailOutbox, ensureSchema } from '../../lib/db';
+import { getDb, listRegistrations, ensureSchema } from '../../lib/db';
 
 const authed = isAdminRequest(Astro.request, Astro.locals.runtime.env);
 const lang = 'sk';
-const emailConfigured = Boolean(Astro.locals.runtime.env?.RESEND_API_KEY);
 
 let registrations: any[] = [];
-let emailLogs: any[] = [];
 if (authed) {
   const db = getDb(Astro.locals.runtime.env);
   await ensureSchema(db);
   registrations = await listRegistrations(db);
-  emailLogs = await listEmailOutbox(db, 12);
 }
 
 const statusOrder = [
@@ -42,7 +39,6 @@ const yesNo = (value: any) => (value ? 'Yes' : 'No');
   lang={lang}
   title="Admin | nakupovanie.sk / nakupovani.cz"
   description="Admin panel for registrations"
-  noindex={true}
 >
   <main class="admin-wrap">
     <div class="container">
@@ -79,31 +75,6 @@ const yesNo = (value: any) => (value ? 'Yes' : 'No');
                 </div>
               </div>
             ))}
-          </div>
-
-          <div class="grid grid-2">
-            <div class="card">
-              <div class="card-inner">
-                <h2 style="margin-top:0;">Email delivery</h2>
-                {emailConfigured ? (
-                  <p class="small">RESEND_API_KEY is configured. Emails should be sent from this environment.</p>
-                ) : (
-                  <p class="small">
-                    RESEND_API_KEY is missing, so outbound emails are being logged but not delivered.
-                    Add it in Cloudflare Pages / .dev.vars to enable delivery.
-                  </p>
-                )}
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-inner">
-                <h2 style="margin-top:0;">TFWS / Search signals</h2>
-                <p class="small">
-                  Public discovery files are published under <code>/.well-known/</code>, with sitemap, llms, and trust hub endpoints
-                  prepared for external indexing and agent tooling.
-                </p>
-              </div>
-            </div>
           </div>
 
           <div class="admin-grid">
@@ -287,33 +258,11 @@ const yesNo = (value: any) => (value ? 'Yes' : 'No');
 
               <div class="card">
                 <div class="card-inner">
-                  <h2 style="margin-top:0;">TFWS links</h2>
-                  <div class="footer-links">
-                    <a href="/ai-trust-hub.html">trust hub</a>
-                    <a href="/.well-known/ai-trust-hub.json">manifest</a>
-                    <a href="/.well-known/search-discovery.json">search discovery</a>
-                    <a href="/verify.html">verify</a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-inner">
-                  <h2 style="margin-top:0;">Latest email log</h2>
-                  {emailLogs.length ? (
-                    <div class="stack">
-                      {emailLogs.map((entry) => (
-                        <div class="soft-panel" style="padding: 14px; border-radius: 16px;">
-                          <div><strong>{entry.status}</strong> · {entry.recipient}</div>
-                          <div class="small">{entry.subject}</div>
-                          <div class="small">{entry.created_at}</div>
-                          {entry.error_message ? <div class="small">{entry.error_message}</div> : null}
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p class="small">No email log entries yet.</p>
-                  )}
+                  <h2 style="margin-top:0;">TFWS hooks</h2>
+                  <p class="small">
+                    After publishing, generate the hash inventory and keep `/.well-known` aligned with the trust manifest.
+                    The site already ships the TFWS scaffold.
+                  </p>
                 </div>
               </div>
             </div>
