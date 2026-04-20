@@ -1,0 +1,44 @@
+{
+  "$schema": "/schemas/search-discovery.schema.json",
+  "type": "search-discovery",
+  "name": "nakupovanie.sk / nakupovani.cz",
+  "version": "2026.04-final",
+  "domain": "nakupovanie.sk",
+  "aliases": ["nakupovani.cz"],
+  "canonical_landing_pages": {
+    "sk": "/sk",
+    "cz": "/cz",
+    "en": "/en"
+  },
+  "discoverable_pages": [
+    "/sk",
+    "/cz",
+    "/en",
+    "/verify.html",
+    "/ai-trust-hub.html"
+  ],
+  "machine_entrypoints": [
+    "/.well-known/ai-trust-hub.json",
+    "/.well-known/llms.txt",
+    "/.well-known/search-discovery.json",
+    "/.well-known/key-history.json",
+    "/dumps/sha256.json"
+  ],
+  "search_targets": [
+    "https://search.onetoo.eu/",
+    "https://portal.onetoo.eu/"
+  ],
+  "keywords": [
+    "nakupovanie.sk",
+    "nakupovani.cz",
+    "TFWS 2.0",
+    "premium domains",
+    "domain acquisition",
+    "closed bidding",
+    "site discovery"
+  ],
+  "notes": [
+    "Prepared for static indexing, AI agent discovery, and external search ingestion.",
+    "Use sitemap, llms, and trust manifests together for the strongest crawl signal."
+  ]
+}

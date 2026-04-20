@@ -39,7 +39,8 @@
     "policy": "/.well-known/policy.sh",
     "privacy": "/sk/privacy",
     "terms": "/sk/terms",
-    "admin": "/admin",
+    "admin": "/control/panel/",
+    "search_discovery": "/.well-known/search-discovery.json",
     "portal": "https://portal.onetoo.eu/",
     "search": "https://search.onetoo.eu/"
   },

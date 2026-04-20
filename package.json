@@ -15,10 +15,10 @@
     "astro": "^5.10.0"
   },
   "devDependencies": {
-    "@astrojs/cloudflare": "^12.6.12",
-    "@cloudflare/workers-types": "^4.20260405.0",
+    "@astrojs/cloudflare": "^11.0.0",
     "@types/node": "^22.15.0",
     "typescript": "^5.6.3",
-    "wrangler": "^3.101.0"
+    "wrangler": "^3.101.0",
+    "@cloudflare/workers-types": "^4.20260405.0"
   }
 }

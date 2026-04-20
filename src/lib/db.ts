@@ -21,51 +21,23 @@ export interface RegistrationRow {
   last_contact_at?: string | null;
 }
 
-type UpdatableField =
-  | 'company_name'
-  | 'company_id'
-  | 'contact_name'
-  | 'contact_position'
-  | 'email'
-  | 'phone'
-  | 'country'
-  | 'company_website'
-  | 'industry'
-  | 'delivery_address'
-  | 'usage_note'
-  | 'status'
-  | 'consent_data'
-  | 'consent_contact'
-  | 'consent_terms'
-  | 'admin_note'
-  | 'last_contact_at';
-
-const UPDATABLE_FIELDS = new Set<UpdatableField>([
-  'company_name',
-  'company_id',
-  'contact_name',
-  'contact_position',
-  'email',
-  'phone',
-  'country',
-  'company_website',
-  'industry',
-  'delivery_address',
-  'usage_note',
-  'status',
-  'consent_data',
-  'consent_contact',
-  'consent_terms',
-  'admin_note',
-  'last_contact_at',
-]);
+export interface EmailOutboxRow {
+  id: number;
+  recipient: string;
+  subject: string;
+  status: string;
+  provider: string;
+  error_message?: string | null;
+  payload_json: string;
+  created_at: string;
+}
 
 export function getDb(env: any) {
   const db = env?.DB;
   if (!db) {
     throw new Error('D1 database binding DB is missing.');
   }
-  return db as D1Database;
+  return db;
 }
 
 export async function ensureSchema(db: D1Database) {
@@ -102,6 +74,19 @@ export async function ensureSchema(db: D1Database) {
       created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
   `).run();
+
+  await db.prepare(`
+    CREATE TABLE IF NOT EXISTS email_outbox (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      recipient TEXT NOT NULL,
+      subject TEXT NOT NULL,
+      status TEXT NOT NULL,
+      provider TEXT NOT NULL DEFAULT 'resend',
+      error_message TEXT,
+      payload_json TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );
+  `).run();
 }
 
 export async function listRegistrations(db: D1Database) {
@@ -110,7 +95,6 @@ export async function listRegistrations(db: D1Database) {
     FROM registrations
     ORDER BY datetime(created_at) DESC, id DESC
   `).all<RegistrationRow>();
-
   return results;
 }
 
@@ -120,141 +104,27 @@ export async function getRegistration(db: D1Database, id: number) {
     FROM registrations
     WHERE id = ?
   `).bind(id).first<RegistrationRow>();
-
   return row ?? null;
-}
-
-function normalizeValueForField(field: UpdatableField, value: unknown) {
-  if (field === 'consent_data' || field === 'consent_contact' || field === 'consent_terms') {
-    return Number(value) ? 1 : 0;
-  }
-
-  if (field === 'last_contact_at') {
-    const text = String(value ?? '').trim();
-    return text || null;
-  }
-
-  if (field === 'admin_note') {
-    const text = String(value ?? '').trim();
-    return text || null;
-  }
-
-  return String(value ?? '').trim();
 }
 
 export async function updateRegistration(
   db: D1Database,
   id: number,
-  updatesOrField:
-    | Partial<Pick<
-        RegistrationRow,
-        | 'company_name'
-        | 'company_id'
-        | 'contact_name'
-        | 'contact_position'
-        | 'email'
-        | 'phone'
-        | 'country'
-        | 'company_website'
-        | 'industry'
-        | 'delivery_address'
-        | 'usage_note'
-        | 'status'
-        | 'consent_data'
-        | 'consent_contact'
-        | 'consent_terms'
-        | 'admin_note'
-        | 'last_contact_at'
-      >>
-    | string,
-  maybeValue?: string
+  updates: Partial<Pick<RegistrationRow, 'status' | 'admin_note' | 'last_contact_at'>>
 ) {
   const current = await getRegistration(db, id);
   if (!current) return null;
-
-  let updates: Partial<Record<UpdatableField, any>> = {};
-
-  if (typeof updatesOrField === 'string') {
-    const field = updatesOrField.trim() as UpdatableField;
-    if (!UPDATABLE_FIELDS.has(field)) {
-      throw new Error(`Unsupported field: ${field}`);
-    }
-    updates[field] = normalizeValueForField(field, maybeValue);
-  } else {
-    for (const [key, rawValue] of Object.entries(updatesOrField)) {
-      if (!UPDATABLE_FIELDS.has(key as UpdatableField)) {
-        continue;
-      }
-      const field = key as UpdatableField;
-      updates[field] = normalizeValueForField(field, rawValue);
-    }
-  }
-
-  const nextStatus = (updates.status as string | undefined) ?? current.status;
-  const nextAdminNote =
-    updates.admin_note !== undefined ? (updates.admin_note as string | null) : current.admin_note ?? null;
-  const nextLastContactAt =
-    updates.last_contact_at !== undefined
-      ? (updates.last_contact_at as string | null)
-      : current.last_contact_at ?? null;
-
-  const nextCompanyName = (updates.company_name as string | undefined) ?? current.company_name;
-  const nextCompanyId = (updates.company_id as string | undefined) ?? current.company_id;
-  const nextContactName = (updates.contact_name as string | undefined) ?? current.contact_name;
-  const nextContactPosition = (updates.contact_position as string | undefined) ?? current.contact_position;
-  const nextEmail = (updates.email as string | undefined) ?? current.email;
-  const nextPhone = (updates.phone as string | undefined) ?? current.phone;
-  const nextCountry = (updates.country as string | undefined) ?? current.country;
-  const nextCompanyWebsite = (updates.company_website as string | undefined) ?? current.company_website;
-  const nextIndustry = (updates.industry as string | undefined) ?? current.industry;
-  const nextDeliveryAddress = (updates.delivery_address as string | undefined) ?? current.delivery_address;
-  const nextUsageNote = (updates.usage_note as string | undefined) ?? current.usage_note;
-  const nextConsentData = (updates.consent_data as number | undefined) ?? current.consent_data;
-  const nextConsentContact = (updates.consent_contact as number | undefined) ?? current.consent_contact;
-  const nextConsentTerms = (updates.consent_terms as number | undefined) ?? current.consent_terms;
-
+  const status = updates.status ?? current.status;
+  const adminNote = updates.admin_note ?? current.admin_note ?? null;
+  const lastContactAt = updates.last_contact_at ?? current.last_contact_at ?? null;
   await db.prepare(`
     UPDATE registrations
-    SET company_name = ?,
-        company_id = ?,
-        contact_name = ?,
-        contact_position = ?,
-        email = ?,
-        phone = ?,
-        country = ?,
-        company_website = ?,
-        industry = ?,
-        delivery_address = ?,
-        usage_note = ?,
-        status = ?,
-        consent_data = ?,
-        consent_contact = ?,
-        consent_terms = ?,
+    SET status = ?,
         admin_note = ?,
         last_contact_at = ?,
         updated_at = CURRENT_TIMESTAMP
     WHERE id = ?
-  `).bind(
-    nextCompanyName,
-    nextCompanyId,
-    nextContactName,
-    nextContactPosition,
-    nextEmail,
-    nextPhone,
-    nextCountry,
-    nextCompanyWebsite,
-    nextIndustry,
-    nextDeliveryAddress,
-    nextUsageNote,
-    nextStatus,
-    nextConsentData,
-    nextConsentContact,
-    nextConsentTerms,
-    nextAdminNote,
-    nextLastContactAt,
-    id
-  ).run();
-
+  `).bind(status, adminNote, lastContactAt, id).run();
   return await getRegistration(db, id);
 }
 
@@ -298,4 +168,36 @@ export async function insertRegistration(db: D1Database, data: {
   ).run();
 
   return Number(result.meta.last_row_id);
+}
+
+export async function insertEmailOutbox(db: D1Database, entry: {
+  recipient: string;
+  subject: string;
+  status: string;
+  provider?: string;
+  error_message?: string | null;
+  payload_json: string;
+}) {
+  await db.prepare(`
+    INSERT INTO email_outbox (
+      recipient, subject, status, provider, error_message, payload_json
+    ) VALUES (?, ?, ?, ?, ?, ?)
+  `).bind(
+    entry.recipient,
+    entry.subject,
+    entry.status,
+    entry.provider ?? 'resend',
+    entry.error_message ?? null,
+    entry.payload_json,
+  ).run();
+}
+
+export async function listEmailOutbox(db: D1Database, limit = 15) {
+  const { results } = await db.prepare(`
+    SELECT *
+    FROM email_outbox
+    ORDER BY datetime(created_at) DESC, id DESC
+    LIMIT ?
+  `).bind(limit).all<EmailOutboxRow>();
+  return results;
 }

@@ -9,6 +9,14 @@ export function getStaticPaths() {
 
 const lang = normalizeLang(Astro.params.lang);
 const copy = siteCopy[lang];
+const mail = Astro.url.searchParams.get('mail');
+const mailMessage = mail === 'sent'
+  ? { sk: 'Potvrdzovací email bol odoslaný.', cz: 'Potvrzovací email byl odeslán.', en: 'The confirmation email was sent.' }[lang]
+  : mail === 'skipped'
+    ? { sk: 'Emailové odosielanie ešte nie je nakonfigurované. Správa je uložená v admin logu.', cz: 'E-mailové odesílání ještě není nakonfigurováno. Zpráva je uložená v admin logu.', en: 'Email delivery is not configured yet. The message is stored in the admin log.' }[lang]
+    : mail === 'error'
+      ? { sk: 'Emailový provider vrátil chybu. Skontroluj admin log.', cz: 'Emailový provider vrátil chybu. Zkontroluj admin log.', en: 'The email provider returned an error. Check the admin log.' }[lang]
+      : null;
 ---
 
 <BaseLayout lang={lang} title={`${copy.thankYou.title} | ${copy.nav.logo}`} description={copy.thankYou.intro} canonical={`/${lang}/thank-you`}>
@@ -24,6 +32,10 @@ const copy = siteCopy[lang];
             <div class="badge">Kontakt</div>
             <p class="lead" style="margin: 12px 0 0;">{copy.thankYou.contactText}</p>
           </div>
+
+          {mailMessage ? (
+            <div class="notice" style="margin-top: 18px;">{mailMessage}</div>
+          ) : null}
 
           <div class="btn-row">
             <a class="btn btn-primary" href={`/${lang}`}>{copy.thankYou.cta}</a>

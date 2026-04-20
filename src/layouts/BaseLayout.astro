@@ -5,11 +5,13 @@ const {
   description,
   lang = 'sk',
   canonical,
+  noindex = false,
 } = Astro.props as {
   title: string;
   description: string;
   lang?: string;
   canonical?: string;
+  noindex?: boolean;
 };
 ---
 
@@ -22,6 +24,7 @@ const {
     <title>{title}</title>
     <meta name="description" content={description} />
     {canonical ? <link rel="canonical" href={canonical} /> : null}
+    {noindex ? <meta name="robots" content="noindex,nofollow" /> : null}
     <meta name="theme-color" content="#0b0b0d" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

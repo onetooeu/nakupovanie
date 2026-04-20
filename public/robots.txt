@@ -1,6 +1,8 @@
 User-agent: *
 Allow: /
 Disallow: /admin
+Disallow: /panel
+Disallow: /control
 Disallow: /api
 
 Sitemap: https://nakupovanie.sk/sitemap.xml

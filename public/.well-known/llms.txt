@@ -19,6 +19,7 @@ Premium domain acquisition hub for:
 - /.well-known/llms.txt
 - /.well-known/minisign.pub
 - /.well-known/key-history.json
+- /.well-known/search-discovery.json
 - /dumps/sha256.json
 - /dumps/sigs/sha256.json.minisig
 
@@ -33,3 +34,4 @@ The project includes:
 - closed bidding process
 - TFWS 2.0 trust scaffold
 - simple admin panel
+- search discovery manifest for agent ingestion

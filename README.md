@@ -5,7 +5,8 @@ Prémiový predajný web pre dvojicu domén, postavený ako:
 - firemný registračný funnel,
 - okamžitá kúpa po registrácii,
 - uzavretý proces dražby,
-- TFWS 2.0 trust layer.
+- TFWS 2.0 trust layer,
+- discovery manifest pre agentov a indexovanie.
 
 ## Stack
 
@@ -13,7 +14,7 @@ Prémiový predajný web pre dvojicu domén, postavený ako:
 - TypeScript
 - Cloudflare Pages / Pages Functions
 - D1 databáza pre registrácie
-- jednoduchý admin panel
+- jednoduchý admin panel na `/control/panel/`
 - TFWS 2.0 public artifacts v `/.well-known/`
 
 ## Rýchly štart
@@ -22,12 +23,14 @@ Prémiový predajný web pre dvojicu domén, postavený ako:
 2. Skopíruj `.dev.vars.example` na `.dev.vars`
 3. Spusť `npm run dev`
 4. Pred nasadením vytvor D1 databázu a doplň `database_id` vo `wrangler.toml`
+5. Pre emaily doplň `RESEND_API_KEY` a `EMAIL_FROM`
 
 ## TFWS
 
 Repo obsahuje:
 - `/.well-known/ai-trust-hub.json`
 - `/.well-known/llms.txt`
+- `/.well-known/search-discovery.json`
 - `/.well-known/key-history.json`
 - `/.well-known/minisign.pub`
 - `/.well-known/security.txt`
@@ -50,12 +53,22 @@ npm run tfws:sign
 
 ## Admin
 
-Admin rozhranie je jednoduché a chránené heslom:
-- login na `/admin`
-- záznamy registrácií
-- statusy
-- poznámky
-- export dát
+Admin rozhranie je dostupné na:
+- `/control/panel/`
+- `/admin` (redirect)
+- `/panel` (redirect)
+
+Panel ukazuje:
+- registrácie,
+- všetky polia formulára,
+- email logy,
+- export dát,
+- TFWS odkazy.
+
+## Emaily
+
+Email odosielanie používa Resend.
+Ak `RESEND_API_KEY` nie je nastavený, odoslanie sa len zaloguje do D1 tabuľky `email_outbox`, aby bolo jasné, prečo mail neodišiel.
 
 ## Poznámka k TFWS 2.0
 
