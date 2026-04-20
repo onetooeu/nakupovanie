@@ -1,6 +1,5 @@
-# Copy to .dev.vars and fill in your secrets.
-ADMIN_PASSWORD=change-me-now
-ADMIN_COOKIE_SECRET=change-me-too
-RESEND_API_KEY=
-EMAIL_FROM="Nakupovanie <noreply@nakupovanie.sk>"
-ADMIN_NOTIFY_EMAIL=
+ADMIN_PASSWORD=Society987
+ADMIN_COOKIE_SECRET=akosamasdebilejeden
+RESEND_API_KEY=re_B5YuMP6S_H85hMMksKm6VbGvYxcJ3oSBg
+EMAIL_FROM="Nakupovanie <noreply@mail.nakupovanie.sk>"
+ADMIN_NOTIFY_EMAIL=pato.ulicny@gmail.com
