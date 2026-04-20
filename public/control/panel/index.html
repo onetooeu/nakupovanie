@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="sk">
 <head>
   <meta charset="utf-8" />
@@ -7,156 +7,102 @@
   <meta name="robots" content="noindex,nofollow" />
   <style>
     :root { color-scheme: dark; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: #0b0b0f;
-      color: #f5f1ea;
-      font-family: Arial, sans-serif;
-    }
-    .wrap {
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      box-sizing: border-box;
-    }
-    .card {
-      width: min(980px, 100%);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 20px;
-      background: rgba(255,255,255,.04);
-      box-shadow: 0 20px 60px rgba(0,0,0,.35);
-      padding: 28px;
-      box-sizing: border-box;
-    }
-    .kicker {
-      text-transform: uppercase;
-      letter-spacing: .18em;
-      font-size: 12px;
-      opacity: .7;
-      margin-bottom: 10px;
-    }
-    h1 {
-      margin: 0 0 12px;
-      font-size: 42px;
-      line-height: 1.05;
-    }
-    p {
-      margin: 0 0 16px;
-      opacity: .9;
-      line-height: 1.55;
-    }
-    label {
-      display: block;
-      margin: 0 0 8px;
-      font-weight: 700;
-    }
-    input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 14px 16px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: #111318;
-      color: #fff;
-      font-size: 16px;
-    }
-    button, a.btn {
-      display: inline-block;
-      margin-top: 16px;
-      padding: 14px 18px;
-      border: 0;
-      border-radius: 999px;
-      background: #e7c27a;
-      color: #111;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    .btn-secondary {
-      background: transparent;
-      color: #f5f1ea;
-      border: 1px solid rgba(255,255,255,.16);
-    }
-    .row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 18px;
-    }
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 18px;
-    }
-    .panel {
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      padding: 16px;
-    }
-    .small {
-      font-size: 14px;
-      opacity: .75;
-    }
+    body { margin: 0; min-height: 100vh; background: #0b0b0f; color: #f5f1ea; font-family: Arial, sans-serif; }
+    .wrap { min-height: 100vh; display: grid; place-items: center; padding: 24px; box-sizing: border-box; }
+    .shell { width: min(1200px, 100%); display: grid; gap: 18px; }
+    .card { border: 1px solid rgba(255,255,255,.12); border-radius: 20px; background: rgba(255,255,255,.04); box-shadow: 0 20px 60px rgba(0,0,0,.35); padding: 28px; box-sizing: border-box; }
+    .kicker { text-transform: uppercase; letter-spacing: .18em; font-size: 12px; opacity: .7; margin-bottom: 10px; }
+    h1 { margin: 0 0 12px; font-size: 42px; line-height: 1.05; }
+    h2 { margin: 0 0 10px; font-size: 22px; }
+    p { margin: 0 0 16px; opacity: .9; line-height: 1.55; }
+    label { display: block; margin: 0 0 8px; font-weight: 700; }
+    input, select, textarea { width: 100%; box-sizing: border-box; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,.16); background: #111318; color: #fff; font-size: 16px; }
+    textarea { min-height: 92px; resize: vertical; }
+    button, a.btn { display: inline-block; margin-top: 16px; padding: 14px 18px; border: 0; border-radius: 999px; background: #e7c27a; color: #111; font-size: 16px; font-weight: 700; cursor: pointer; text-decoration: none; }
+    .btn-secondary { background: transparent; color: #f5f1ea; border: 1px solid rgba(255,255,255,.16); }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .panel { border-radius: 16px; border: 1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.03); padding: 16px; }
+    .small { font-size: 14px; opacity: .75; }
     .hidden { display: none !important; }
-    .error {
-      margin-top: 12px;
-      color: #ffb4b4;
-      font-size: 14px;
-      min-height: 1.2em;
-    }
-    @media (max-width: 900px) {
-      .grid, .grid-3 { grid-template-columns: 1fr; }
-      h1 { font-size: 32px; }
-    }
+    .error { margin-top: 12px; color: #ffb4b4; font-size: 14px; min-height: 1.2em; }
+    .table-wrap { overflow: auto; border-radius: 16px; border: 1px solid rgba(255,255,255,.10); }
+    table { width: 100%; border-collapse: collapse; min-width: 980px; background: rgba(255,255,255,.02); }
+    th, td { padding: 14px 12px; border-bottom: 1px solid rgba(255,255,255,.08); vertical-align: top; text-align: left; }
+    th { background: rgba(255,255,255,.03); }
+    .badge { display: inline-block; padding: 6px 10px; border-radius: 999px; background: rgba(231,194,122,.12); border: 1px solid rgba(231,194,122,.22); color: #f5dfb0; font-size: 12px; }
+    .stack { display: grid; gap: 18px; }
+    .cols { display: grid; grid-template-columns: 1.35fr .95fr; gap: 18px; }
+    .email-log { display: grid; gap: 10px; }
+    .email-item { border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 12px; background: rgba(255,255,255,.02); }
+    .status-select { min-width: 160px; }
+    .detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 16px; }
+    code { background: rgba(255,255,255,.07); padding: 2px 6px; border-radius: 6px; }
+    @media (max-width: 900px) { .grid, .grid-3, .cols, .detail-grid { grid-template-columns: 1fr; } h1 { font-size: 32px; } }
   </style>
 </head>
 <body>
   <main class="wrap">
-    <section id="loginCard" class="card hidden">
-      <div class="kicker">Admin login</div>
-      <h1>Sign in</h1>
-      <p>Admin login for nakupovanie.sk / nakupovani.cz</p>
+    <div class="shell">
+      <section id="loginCard" class="card hidden">
+        <div class="kicker">Admin login</div>
+        <h1>Sign in</h1>
+        <p>Admin login for nakupovanie.sk / nakupovani.cz</p>
+        <form id="loginForm" action="/api/admin/login" method="post">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" />
+          <button type="submit">Login</button>
+          <div id="loginError" class="error"></div>
+        </form>
+        <p class="small" style="margin-top:14px;">Set <code>ADMIN_PASSWORD</code> and <code>ADMIN_COOKIE_SECRET</code> in <code>.dev.vars</code> or Cloudflare secrets.</p>
+      </section>
 
-      <form id="loginForm" action="/api/admin/login" method="post">
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" autocomplete="current-password" />
-        <button type="submit">Login</button>
-        <div id="loginError" class="error"></div>
-      </form>
+      <section id="panelCard" class="card hidden">
+        <div class="kicker">Admin panel</div>
+        <h1>CONTROL PANEL LIVE</h1>
+        <p>Statický panel v <code>public/control/panel/index.html</code>. Login, exporty, registrácie aj emailový log sa načítajú cez API.</p>
+        <div class="row">
+          <a class="btn" href="/api/admin/export.csv">Export CSV</a>
+          <a class="btn btn-secondary" href="/api/admin/export.json">Export JSON</a>
+          <a class="btn btn-secondary" href="/api/admin/logout">Logout</a>
+        </div>
+        <div class="grid-3" id="stats"></div>
+        <div class="grid" style="margin-top:18px;">
+          <div class="panel"><div class="small">Status</div><strong id="authState">Checking auth…</strong></div>
+          <div class="panel"><div class="small">Panel path</div><strong>/control/panel/</strong></div>
+          <div class="panel"><div class="small">Email delivery</div><strong id="emailState">—</strong></div>
+          <div class="panel"><div class="small">TFWS</div><strong>Discovery + signatures ready</strong></div>
+        </div>
+      </section>
 
-      <p class="small" style="margin-top:14px;">
-        Set ADMIN_PASSWORD and ADMIN_COOKIE_SECRET in .dev.vars or Cloudflare secrets.
-      </p>
-    </section>
-
-    <section id="panelCard" class="card hidden">
-      <div class="kicker">Admin panel</div>
-      <h1>CONTROL PANEL LIVE</h1>
-      <p>Ak toto vidíš po prihlásení, route aj auth fungujú. Tento panel beží ako čistý statický HTML súbor v <code>public/</code>.</p>
-
-      <div class="row">
-        <a class="btn" href="/api/admin/export.csv">Export CSV</a>
-        <a class="btn btn-secondary" href="/api/admin/export.json">Export JSON</a>
-        <a class="btn btn-secondary" href="/api/admin/logout">Logout</a>
-      </div>
-
-      <div class="grid-3" id="stats"></div>
-
-      <div class="panel" style="margin-top:18px;">
-        <div class="small">Status</div>
-        <strong id="authState">Checking auth…</strong>
-      </div>
-    </section>
+      <section id="registrationsSection" class="card hidden">
+        <div class="kicker">Registrations</div>
+        <div class="cols">
+          <div class="stack">
+            <div class="panel">
+              <h2 style="margin-top:0;">Registration list</h2>
+              <div class="table-wrap" id="tableWrap"></div>
+            </div>
+            <div class="panel">
+              <h2 style="margin-top:0;">Full registration details</h2>
+              <div id="detailsWrap" class="detail-grid"></div>
+            </div>
+          </div>
+          <div class="stack">
+            <div class="panel">
+              <h2 style="margin-top:0;">Email outbox</h2>
+              <p class="small">If <code>RESEND_API_KEY</code> is missing, messages are logged here as skipped and not delivered.</p>
+              <div id="outboxWrap" class="email-log"></div>
+            </div>
+            <div class="panel">
+              <h2 style="margin-top:0;">Quick note</h2>
+              <p class="small">Updating a status uses <code>/api/admin/registration/:id</code>. The form posts back to the same panel after save.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
 
   <script>
@@ -164,20 +110,15 @@
     const loginError = document.getElementById('loginError');
     const loginCard = document.getElementById('loginCard');
     const panelCard = document.getElementById('panelCard');
+    const registrationsSection = document.getElementById('registrationsSection');
     const stats = document.getElementById('stats');
     const authState = document.getElementById('authState');
+    const emailState = document.getElementById('emailState');
+    const tableWrap = document.getElementById('tableWrap');
+    const detailsWrap = document.getElementById('detailsWrap');
+    const outboxWrap = document.getElementById('outboxWrap');
 
-    const statusOrder = [
-      'new',
-      'confirmed',
-      'shortlisted',
-      'posted',
-      'buy_now_interest',
-      'auction_interest',
-      'inactive',
-      'won',
-      'lost',
-    ];
+    const statusOrder = ['new','confirmed','shortlisted','posted','buy_now_interest','auction_interest','inactive','won','lost'];
 
     function escapeHtml(value) {
       return String(value ?? '')
@@ -191,46 +132,138 @@
     function showLogin(message) {
       loginCard.classList.remove('hidden');
       panelCard.classList.add('hidden');
+      registrationsSection.classList.add('hidden');
       authState.textContent = message || 'Not signed in';
     }
 
-    function showPanel(rows) {
-      loginCard.classList.add('hidden');
-      panelCard.classList.remove('hidden');
-      authState.textContent = 'Authenticated';
-
+    function renderStats(rows, emailConfigured) {
       const counts = Object.fromEntries(statusOrder.map((status) => [status, 0]));
       for (const row of rows) {
         if (row && row.status in counts) counts[row.status]++;
       }
-
       stats.innerHTML = `
-        <div class="panel"><div class="small">Panel path</div><strong>/control/panel/</strong></div>
-        <div class="panel"><div class="small">Registrations</div><strong>${rows.length}</strong></div>
-        <div class="panel"><div class="small">New</div><strong>${counts.new}</strong></div>
+        <div class="panel"><div class="small">Registrations</div><strong style="font-size:2rem;">${rows.length}</strong></div>
+        <div class="panel"><div class="small">New</div><strong style="font-size:2rem;">${counts.new}</strong></div>
+        <div class="panel"><div class="small">Confirmed</div><strong style="font-size:2rem;">${counts.confirmed}</strong></div>
       `;
+      emailState.textContent = emailConfigured ? 'Configured' : 'Missing';
+    }
+
+    function renderTable(rows) {
+      if (!rows.length) {
+        tableWrap.innerHTML = '<div class="panel">No registrations yet.</div>';
+        detailsWrap.innerHTML = '<div class="panel">No registrations yet.</div>';
+        return;
+      }
+
+      const first = rows[0];
+      detailsWrap.innerHTML = [
+        'company_name','company_id','contact_name','contact_position','email','phone','country','company_website','industry','delivery_address','usage_note','status','created_at','updated_at'
+      ].map((key) => `
+        <div><div class="small">${escapeHtml(key.replaceAll('_', ' '))}</div><div>${escapeHtml(first[key] || '—')}</div></div>
+      `).join('');
+
+      tableWrap.innerHTML = `
+        <table>
+          <thead>
+            <tr><th>Company</th><th>Contact</th><th>Status</th><th>Created</th></tr>
+          </thead>
+          <tbody>
+            ${rows.map((row) => `
+              <tr>
+                <td>
+                  <strong>${escapeHtml(row.company_name)}</strong><br>
+                  <span class="small">IČO: ${escapeHtml(row.company_id)}</span><br>
+                  <span class="small">Country: ${escapeHtml(row.country)}</span><br>
+                  <span class="small">Industry: ${escapeHtml(row.industry)}</span>
+                </td>
+                <td>
+                  <div class="small">${escapeHtml(row.contact_name)}</div>
+                  <div class="small">${escapeHtml(row.contact_position)}</div>
+                  <div class="small">${escapeHtml(row.email)}</div>
+                  <div class="small">${escapeHtml(row.phone)}</div>
+                </td>
+                <td>
+                  <form class="update-form" method="post" action="/api/admin/registration/${row.id}">
+                    <input type="hidden" name="field" value="status">
+                    <select class="status-select" name="value">
+                      ${statusOrder.map((status) => `<option value="${status}" ${row.status === status ? 'selected' : ''}>${status}</option>`).join('')}
+                    </select>
+                    <button type="submit">Update</button>
+                  </form>
+                </td>
+                <td class="small">${escapeHtml(row.created_at || '')}</td>
+              </tr>
+              <tr>
+                <td colspan="4">
+                  <div class="panel" style="margin: 0 0 18px;">
+                    <strong>Full registration details</strong>
+                    <div class="detail-grid">
+                      <div><div class="small">Company name</div><div>${escapeHtml(row.company_name || '—')}</div></div>
+                      <div><div class="small">Company ID</div><div>${escapeHtml(row.company_id || '—')}</div></div>
+                      <div><div class="small">Contact name</div><div>${escapeHtml(row.contact_name || '—')}</div></div>
+                      <div><div class="small">Contact position</div><div>${escapeHtml(row.contact_position || '—')}</div></div>
+                      <div><div class="small">Email</div><div>${escapeHtml(row.email || '—')}</div></div>
+                      <div><div class="small">Phone</div><div>${escapeHtml(row.phone || '—')}</div></div>
+                      <div><div class="small">Country</div><div>${escapeHtml(row.country || '—')}</div></div>
+                      <div><div class="small">Company website</div><div>${escapeHtml(row.company_website || '—')}</div></div>
+                      <div><div class="small">Industry</div><div>${escapeHtml(row.industry || '—')}</div></div>
+                      <div><div class="small">Status</div><div>${escapeHtml(row.status || '—')}</div></div>
+                      <div style="grid-column: 1 / -1;"><div class="small">Delivery address</div><div>${escapeHtml(row.delivery_address || '—')}</div></div>
+                      <div style="grid-column: 1 / -1;"><div class="small">Usage note</div><div>${escapeHtml(row.usage_note || '—')}</div></div>
+                      <div><div class="small">Consent data</div><div>${row.consent_data ? 'Yes' : 'No'}</div></div>
+                      <div><div class="small">Consent contact</div><div>${row.consent_contact ? 'Yes' : 'No'}</div></div>
+                      <div><div class="small">Consent terms</div><div>${row.consent_terms ? 'Yes' : 'No'}</div></div>
+                      <div><div class="small">Created at</div><div>${escapeHtml(row.created_at || '—')}</div></div>
+                      <div><div class="small">Updated at</div><div>${escapeHtml(row.updated_at || '—')}</div></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function renderOutbox(items) {
+      if (!items.length) {
+        outboxWrap.innerHTML = '<div class="panel">No email activity yet.</div>';
+        return;
+      }
+      outboxWrap.innerHTML = items.map((item) => `
+        <div class="email-item">
+          <div class="badge">${escapeHtml(item.status)}</div>
+          <div style="height:8px"></div>
+          <strong>${escapeHtml(item.subject)}</strong>
+          <div class="small">To: ${escapeHtml(item.recipient)}</div>
+          <div class="small">${escapeHtml(item.created_at || '')}</div>
+        </div>
+      `).join('');
     }
 
     async function loadPanel() {
       try {
-        const res = await fetch('/api/admin/registrations', {
-          credentials: 'include',
-          cache: 'no-store',
-        });
-
+        const res = await fetch('/api/admin/registrations', { credentials: 'include', cache: 'no-store' });
         if (res.status === 401) {
           showLogin('Please sign in');
           return;
         }
-
         if (!res.ok) {
           showLogin(`Failed to load panel (${res.status})`);
           return;
         }
-
         const data = await res.json();
         const rows = Array.isArray(data.registrations) ? data.registrations : [];
-        showPanel(rows);
+        const outbox = Array.isArray(data.emailOutbox) ? data.emailOutbox : [];
+        const emailConfigured = Boolean(data?.meta?.emailConfigured);
+        loginCard.classList.add('hidden');
+        panelCard.classList.remove('hidden');
+        registrationsSection.classList.remove('hidden');
+        authState.textContent = 'Authenticated';
+        renderStats(rows, emailConfigured);
+        renderTable(rows);
+        renderOutbox(outbox);
       } catch (error) {
         console.error(error);
         showLogin('Panel load failed');
@@ -240,22 +273,14 @@
     loginForm?.addEventListener('submit', async (event) => {
       event.preventDefault();
       loginError.textContent = '';
-
       try {
-        const res = await fetch('/api/admin/login', {
-          method: 'POST',
-          body: new FormData(loginForm),
-          credentials: 'include',
-          cache: 'no-store',
-        });
-
+        const res = await fetch('/api/admin/login', { method: 'POST', body: new FormData(loginForm), credentials: 'include', cache: 'no-store' });
         if (!res.ok) {
           const data = await res.json().catch(() => null);
           loginError.textContent = data?.error || 'Invalid password';
           showLogin(loginError.textContent);
           return;
         }
-
         await loadPanel();
       } catch (error) {
         console.error(error);
