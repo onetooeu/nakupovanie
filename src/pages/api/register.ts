@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
-import { getDb, insertRegistration, ensureSchema } from '../../../lib/db';
-import { sendEmail } from '../../../lib/email';
-import { siteCopy } from '../../../data/siteCopy';
+import { getDb, insertRegistration, ensureSchema } from '../../lib/db';
+import { sendEmail } from '../../lib/email';
+import { siteCopy } from '../../data/siteCopy';
 
 function asInt(value: FormDataEntryValue | null) {
   return value ? 1 : 0;
@@ -43,24 +43,37 @@ export const POST: APIRoute = async ({ request, locals }) => {
     data.usage_note,
   ];
 
-  if (requiredTextFields.some((value) => !String(value).trim()) || data.consent_data !== 1 || data.consent_contact !== 1 || data.consent_terms !== 1) {
-    return new Response(JSON.stringify({ ok: false, error: 'Missing fields' }), { status: 400 });
+  if (
+    requiredTextFields.some((value) => !String(value).trim()) ||
+    data.consent_data !== 1 ||
+    data.consent_contact !== 1 ||
+    data.consent_terms !== 1
+  ) {
+    return new Response(JSON.stringify({ ok: false, error: 'Missing fields' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+    });
   }
 
   const db = getDb(locals.runtime.env);
   await ensureSchema(db);
 
   const id = await insertRegistration(db, data);
-  await db.prepare(`INSERT INTO tfws_events (event_type, payload) VALUES (?, ?)`).bind(
-    'registration_created',
-    JSON.stringify({ id, company_name: data.company_name, email: data.email, lang })
-  ).run();
 
-  const subject = lang === 'cz'
-    ? 'Potvrzení registrace – nakupovani.cz'
-    : lang === 'en'
-      ? 'Registration confirmation – nakupovanie.sk / nakupovani.cz'
-      : 'Potvrdenie registrácie – nakupovanie.sk / nakupovani.cz';
+  await db
+    .prepare(`INSERT INTO tfws_events (event_type, payload) VALUES (?, ?)`)
+    .bind(
+      'registration_created',
+      JSON.stringify({ id, company_name: data.company_name, email: data.email, lang }),
+    )
+    .run();
+
+  const subject =
+    lang === 'cz'
+      ? 'Potvrzení registrace – nakupovani.cz'
+      : lang === 'en'
+        ? 'Registration confirmation – nakupovanie.sk / nakupovani.cz'
+        : 'Potvrdenie registrácie – nakupovanie.sk / nakupovani.cz';
 
   const html = `
     <p>Dobrý deň / Hello,</p>
@@ -73,6 +86,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
   const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 
   let mailStatus: 'sent' | 'skipped' | 'error' = 'sent';
+
   try {
     const mailResult = await sendEmail(locals.runtime.env, {
       to: data.email,
@@ -80,6 +94,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       html,
       text,
     });
+
     if ((mailResult as any)?.skipped) {
       mailStatus = 'skipped';
     }
