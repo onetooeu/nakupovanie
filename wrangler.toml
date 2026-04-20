@@ -1,8 +1,4 @@
 name = "nakupovanie"
 compatibility_date = "2025-04-16"
 pages_build_output_dir = "dist"
-
-[[d1_databases]]
-binding = "DB"
-database_name = "nakupovanie_db"
-database_id = "8d884e25-5b45-479c-b93a-e371702e998e"
+compatibility_flags = ["nodejs_compat"]
