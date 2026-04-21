@@ -7,7 +7,12 @@ export interface EmailMessage {
   text: string;
 }
 
-async function logEmail(env: any, message: EmailMessage, status: string, errorMessage?: string | null) {
+async function logEmail(
+  env: any,
+  message: EmailMessage,
+  status: string,
+  errorMessage?: string | null,
+) {
   const db = env?.DB as D1Database | undefined;
   if (!db) return;
 
@@ -36,7 +41,6 @@ export async function sendEmail(env: any, message: EmailMessage) {
   const from = env?.EMAIL_FROM ?? 'Nakupovanie <noreply@nakupovanie.sk>';
 
   if (!apiKey) {
-    console.log('[email] RESEND_API_KEY missing, skipping send:', message.subject);
     await logEmail(env, message, 'skipped_no_api_key', 'RESEND_API_KEY missing');
     return { skipped: true };
   }
@@ -46,6 +50,7 @@ export async function sendEmail(env: any, message: EmailMessage) {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
+      'User-Agent': 'nakupovanie.sk/1.0',
     },
     body: JSON.stringify({
       from,
