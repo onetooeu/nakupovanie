@@ -9,6 +9,12 @@ This repository is being built step by step under the Nakupovanie M0 build plan.
 
 ## Current state
 
-Repository bootstrap only.
+The repository has a Node.js 24, pnpm 11, and strict TypeScript toolchain baseline.
 
-No application source code, production deployment, merchant integration, or remote Git repository is created by NAK-M0-004.
+Run the complete local gate with:
+
+```powershell
+corepack pnpm check
+```
+
+Application source code, production deployment, and merchant integrations are not part of this baseline.
