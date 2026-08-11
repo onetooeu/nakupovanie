@@ -9,7 +9,7 @@ Do not work on multiple major milestones in one controller iteration.
 ## M0
 
 - [x] NAK-M0-007 — Toolchain and TypeScript baseline
-- [ ] NAK-M0-008 — Application skeleton: web, api, worker
+- [x] NAK-M0-008 — Application skeleton: web, api, worker
 - [ ] NAK-M0-009 — PostgreSQL local baseline and database adapter
 - [ ] NAK-M0-010 — Kernel primitives
 - [ ] NAK-M0-011 — Gaming domain reference model
