@@ -17,6 +17,7 @@ Accepted baseline decisions:
 | 0004 | Commerce, trust, and ranking integrity | ACCEPTED |
 | 0005 | NAOS provider-neutral agent governance | ACCEPTED |
 | 0006 | Autonomous operation and independent self-review | ACCEPTED |
+| 0007 | GitHub autonomy and legacy main preservation | ACCEPTED |
 
 ## ADR Rules
 

@@ -1,7 +1,7 @@
 # Nakupovanie Project Constitution
 
 Status: **ACTIVE BASELINE**
-Version: **0.2**
+Version: **0.3**
 Effective date: **2026-08-11**
 Applies to: the Nakupovanie platform, its repositories, build workflow, future NAOS agents, and governed automation.
 
@@ -213,3 +213,19 @@ This amendment authorizes automatic local Git commits after approval gates pass.
 Remote Git/GitHub operations, production releases, financial capabilities and other higher-risk external effects may later become autonomous only after their dedicated policies and recovery controls are established.
 
 No autonomous workflow may use this amendment to silently erase evidence, self-escalate constitutional capability, bypass Safety Kernel/Sentinel controls, expose secrets, or perform uncontrolled destructive actions outside the governed project environment.
+
+## 16. GitHub Autonomous Publication Amendment — Version 0.3
+
+The canonical GitHub repository is `onetooeu/nakupovanie`.
+
+During migration, the legacy remote `main` is preserved and the new platform is
+published autonomously to `platform-v3`.
+
+Routine approved local commits may be pushed automatically to `platform-v3`
+without founder confirmation after Builder, Reviewer and deterministic gates pass.
+
+Automatic publication does not authorize force pushes, remote-ref deletion,
+legacy-main replacement, default-branch cutover, or history destruction.
+
+Promotion from `platform-v3` to the canonical production/default branch requires
+a dedicated migration/cutover policy with CI, recovery and rollback evidence.

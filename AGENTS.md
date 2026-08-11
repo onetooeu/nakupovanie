@@ -298,3 +298,31 @@ Do not create a human approval dependency merely because an action is routine an
 If a hard constitutional boundary is encountered, fail safely, preserve evidence, open an incident/work-item state, and allow the controller to choose a bounded recovery path.
 
 This delegation does not authorize a worker to grant itself new constitutional capabilities, erase evidence, expose secrets, move money without a dedicated policy, or bypass Sentinel/Safety Kernel controls.
+
+## 18. GitHub Autonomous Publication Lane
+
+Canonical GitHub repository:
+
+`https://github.com/onetooeu/nakupovanie.git`
+
+Migration publication branch:
+
+`platform-v3`
+
+The existing remote `main` is legacy and must remain untouched until a dedicated
+cutover work item explicitly changes that policy.
+
+For controller-approved work:
+
+- the deterministic controller may push approved local commits to `origin/platform-v3`;
+- the Builder and Reviewer do not push directly;
+- no force push is allowed;
+- no remote branch/tag deletion is allowed;
+- no push to `origin/main` is allowed;
+- no default-branch change is allowed in ordinary work;
+- `origin` must resolve exactly to the canonical repository above;
+- remote synchronization failure blocks further publication and must be preserved
+  as evidence rather than bypassed.
+
+GitHub compensation, sponsorship, or other commercial metadata never changes
+organic product ranking behavior.
