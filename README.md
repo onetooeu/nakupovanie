@@ -16,10 +16,20 @@ plus three application entry points:
 - `apps/api` — Fastify HTTP adapter with a health endpoint;
 - `apps/worker` — framework-light background worker entry point.
 
+The PostgreSQL adapter is isolated in `packages/database`. Start its local service,
+apply migrations, and run the live integration gate with:
+
+```powershell
+docker compose up -d --wait postgres
+$env:DATABASE_URL = "postgresql://nakupovanie:local-development-only@localhost:5432/nakupovanie"
+corepack pnpm --filter @nakupovanie/database db:migrate
+corepack pnpm test:integration:database
+```
+
 Run the complete local gate with:
 
 ```powershell
 corepack pnpm check
 ```
 
-Production deployment, persistence, domain behavior, and merchant integrations are not part of this skeleton.
+Production deployment, domain behavior, and merchant integrations are not part of this baseline.

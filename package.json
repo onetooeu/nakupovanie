@@ -12,9 +12,10 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit && corepack pnpm --filter \"./apps/*\" typecheck",
-    "test": "vitest run tooling && corepack pnpm --filter \"./apps/*\" test",
-    "build": "corepack pnpm --filter \"./apps/*\" build",
+    "typecheck": "tsc --noEmit && corepack pnpm --filter \"./apps/*\" --filter \"./packages/*\" typecheck",
+    "test": "vitest run tooling && corepack pnpm --filter \"./apps/*\" --filter \"./packages/*\" test",
+    "test:integration:database": "corepack pnpm --filter @nakupovanie/database test:integration",
+    "build": "corepack pnpm --filter \"./apps/*\" --filter \"./packages/*\" build",
     "check": "corepack pnpm format:check && corepack pnpm lint && corepack pnpm typecheck && corepack pnpm test && corepack pnpm build"
   },
   "devDependencies": {
