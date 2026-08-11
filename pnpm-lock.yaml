@@ -94,6 +94,8 @@ importers:
         specifier: 0.31.8
         version: 0.31.8(supports-color@7.2.0)
 
+  packages/kernel: {}
+
 packages:
 
   '@drizzle-team/brocli@0.10.2':
